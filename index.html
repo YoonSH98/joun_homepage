@@ -19,7 +19,7 @@
     --paper-line:#D9D2BC;
     --seal-red:#B23A2E;
     --seal-red-deep:#8C2C22;
-    --gold:#A6822C;
+    --gold:#E3A62F;
     --text-dark:#16202B;
     --text-muted:#5C6B7A;
     --text-on-navy:#D9E2EA;
@@ -93,11 +93,6 @@
     display:block;
   }
   .header-right{display:flex;align-items:center;gap:12px;}
-  .header-phone{
-    font-family:var(--font-mono);font-weight:600;font-size:15px;
-    color:var(--ink-navy);white-space:nowrap;
-  }
-  .header-phone span{color:var(--text-muted);font-family:var(--font-body);font-weight:500;font-size:13px;display:block;}
   @keyframes ringPulse{
     0%,100%{transform:scale(1);}
     50%{transform:scale(1.1);}
@@ -149,7 +144,7 @@
   }
   .hero h1 em{
     font-style:normal;color:var(--gold);
-    background:linear-gradient(180deg, transparent 62%, rgba(166,130,44,0.35) 62%);
+    background:linear-gradient(180deg, transparent 62%, rgba(227,166,47,0.35) 62%);
   }
   .hero-sub{
     margin-top:20px;font-size:17px;color:var(--text-on-navy-dim);max-width:46ch;
@@ -194,6 +189,13 @@
   }
   .field input:focus, .field select:focus{border-color:var(--ink-navy);outline:none;}
   .form-note{font-size:11.5px;color:var(--text-muted);margin-top:10px;text-align:center;}
+  .form-error{
+    display:none;
+    font-size:13px;font-weight:600;color:var(--seal-red-deep);
+    background:rgba(178,58,46,0.08);border:1px solid rgba(178,58,46,0.25);
+    border-radius:var(--radius-s);padding:10px 12px;margin-top:12px;text-align:center;
+  }
+  .form-error.is-visible{display:block;}
   .form-success{
     display:none;text-align:center;padding:20px 10px;
   }
@@ -207,7 +209,13 @@
     animation:stampIn .55s cubic-bezier(.2,.9,.3,1.5);
   }
 
-  /* Document mockup */
+  @keyframes stampIn{
+    0%{opacity:0;transform:rotate(-12deg) scale(2.4);}
+    60%{opacity:1;transform:rotate(-12deg) scale(0.92);}
+    100%{opacity:1;transform:rotate(-12deg) scale(1);}
+  }
+
+  /* Approval emblem graphic */
   .emblem-stage{position:relative;display:flex;justify-content:center;padding:12px 0;}
   .emblem-wrap{position:relative;width:100%;max-width:340px;}
   .emblem-svg{width:100%;height:auto;filter:drop-shadow(0 26px 46px rgba(0,0,0,0.4));}
@@ -224,11 +232,6 @@
   }
   .emblem-stamp span:first-child{font-size:19px;font-weight:700;letter-spacing:.05em;}
   .emblem-stamp span:last-child{font-size:9px;letter-spacing:.1em;margin-top:2px;}
-  @keyframes stampIn{
-    0%{opacity:0;transform:rotate(-12deg) scale(2.4);}
-    60%{opacity:1;transform:rotate(-12deg) scale(0.92);}
-    100%{opacity:1;transform:rotate(-12deg) scale(1);}
-  }
   .speed-tag{
     position:absolute;left:-4%;bottom:12%;
     background:var(--paper);border-radius:999px;
@@ -313,7 +316,7 @@
   .process-step p{font-size:13.5px;color:var(--text-on-navy-dim);}
   .process-step .step-time{
     display:inline-block;margin-top:10px;font-family:var(--font-mono);font-size:11.5px;
-    color:var(--gold);border:1px solid rgba(166,130,44,0.5);padding:3px 9px;border-radius:20px;
+    color:var(--gold);border:1px solid rgba(227,166,47,0.5);padding:3px 9px;border-radius:20px;
   }
 
   /* Stats */
@@ -340,9 +343,47 @@
   .faq-item.is-open .faq-a{max-height:220px;}
   .faq-a p{padding:0 4px 22px 34px;font-size:15px;color:var(--text-muted);}
 
+  /* Location */
+  .location{background:var(--paper-dim);}
+  .location-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;}
+  .location-info{order:2;}
+  .location-map{order:1;}
+  .location-address{
+    display:flex;gap:14px;align-items:flex-start;
+    padding:22px;background:var(--paper);border:1px solid var(--paper-line);
+    border-radius:var(--radius-m);box-shadow:var(--shadow-card);
+    margin-bottom:20px;
+  }
+  .location-address svg{width:22px;height:22px;color:var(--seal-red);flex-shrink:0;margin-top:2px;}
+  .location-address strong{display:block;font-size:16.5px;color:var(--ink-navy);}
+  .location-address span{display:block;margin-top:6px;font-size:13.5px;color:var(--text-muted);line-height:1.6;}
+  .location-hours{
+    display:inline-flex !important;align-items:center;gap:6px;
+    margin-top:8px !important;width:fit-content;
+    background:rgba(63,107,82,0.1);color:var(--success-teal);
+    font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;
+  }
+  .location-hours::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--success-teal);}
+  .location-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .location-note{margin-top:16px;font-size:13px;color:var(--text-muted);}
+  .location-map{
+    position:relative;border-radius:var(--radius-m);overflow:hidden;
+    background:var(--paper-dim);aspect-ratio:4/3;
+    border:1px solid var(--paper-line);
+  }
+  .location-map svg{width:100%;height:100%;}
+  .location-map-badge{
+    position:absolute;left:14px;top:14px;
+    background:rgba(245,243,236,0.95);backdrop-filter:blur(3px);
+    padding:8px 12px;border-radius:8px;
+    font-size:12px;font-weight:600;color:var(--ink-navy);
+    box-shadow:0 8px 18px -10px rgba(0,0,0,0.3);
+    z-index:5;pointer-events:none;
+  }
+
   /* Final CTA */
   .final-cta{
-    background:var(--paper-dim);
+    background:var(--paper);
   }
   .final-cta-card{
     background:var(--ink-navy);border-radius:20px;padding:56px 48px;
@@ -351,15 +392,18 @@
   }
   .final-cta-card::after{
     content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;
-    border-radius:50%;border:1.5px dashed rgba(166,130,44,0.35);
+    border-radius:50%;border:1.5px dashed rgba(227,166,47,0.35);
   }
   .final-cta-copy h2{font-size:clamp(24px,2.6vw,30px);color:#fff;text-wrap:balance;}
   .final-cta-copy p{margin-top:12px;color:var(--text-on-navy-dim);font-size:15.5px;}
   .final-cta-phone{
-    display:flex;flex-direction:column;gap:12px;min-width:240px;
+    display:flex;flex-direction:column;gap:10px;min-width:240px;align-items:stretch;
   }
-  .final-cta-phone .header-phone{color:#fff;font-size:20px;}
-  .final-cta-phone .header-phone span{color:var(--text-on-navy-dim);}
+  .final-cta-secondary-link{
+    text-align:center;font-size:13.5px;font-weight:500;
+    color:var(--text-on-navy-dim);text-decoration:underline;text-underline-offset:3px;
+  }
+  .final-cta-secondary-link:hover{color:#fff;}
 
   /* Footer */
   footer{background:var(--ink-navy-deep);color:var(--text-on-navy-dim);padding:48px 0 36px;font-size:12.5px;}
@@ -374,13 +418,14 @@
     .hero .container{grid-template-columns:1fr;gap:44px;}
     .emblem-stage{order:-1;}
     .pain-grid{grid-template-columns:1fr;}
+    .location-grid{grid-template-columns:1fr;}
+    .location-map{order:-1;}
     .strengths-grid{grid-template-columns:repeat(2,1fr);}
     .process-track{flex-direction:column;gap:28px;}
     .process-track::before{display:none;}
     .process-step{padding:0;}
     .stats-grid{grid-template-columns:repeat(2,1fr);row-gap:32px;}
     .final-cta-card{grid-template-columns:1fr;text-align:left;padding:40px 26px;}
-    .header-phone{display:none;}
   }
   @media (max-width:560px){
     section{padding:64px 0;}
@@ -407,6 +452,8 @@
     *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=3yrxow0el6&submodules=geocoder"></script>
 </head>
 <body>
 
@@ -454,7 +501,7 @@
           </div>
           <div class="field">
             <label for="companyName">회사명 / 상호</label>
-            <input type="text" id="companyName" name="companyName" placeholder="예: (주)브릿지물산" required>
+            <input type="text" id="companyName" name="companyName" placeholder="예: (주)한빛물산" required>
           </div>
           <div class="field">
             <label for="phone">담당자 연락처</label>
@@ -471,11 +518,12 @@
             </select>
           </div>
           <button type="submit" class="btn btn-primary btn-block btn-lg">1분 무료 상담 신청</button>
+          <p class="form-error" id="formError" role="alert">전송 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</p>
           <p class="form-note">신청 정보는 상담 목적으로만 사용되며, 안전하게 암호화되어 처리됩니다.</p>
         </form>
         <div class="form-success" id="formSuccess">
           <div class="stamp-mini">접수<br>완료</div>
-          <p style="font-weight:700;color:var(--ink-navy);font-size:16px;">상담 신청이 접수되었습니다</p>
+          <p style="font-weight:700;color:var(--ink-navy);font-size:16px;">상담 신청이 완료되었습니다.</p>
           <p style="margin-top:8px;font-size:13.5px;color:var(--text-muted);">담당자가 영업일 기준 빠르게 연락드리겠습니다.</p>
         </div>
       </div>
@@ -627,6 +675,43 @@
   </div>
 </section>
 
+<section class="location">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">오시는 길</div>
+      <h2>방문 상담도 가능합니다</h2>
+      <p>사전 연락 후 방문해 주시면 더 빠르고 편하게 상담해 드립니다.</p>
+    </div>
+    <div class="location-grid">
+      <div class="location-info">
+        <div class="location-address">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div>
+            <strong>경기도 광주시 문화로 129, 2층</strong>
+            <span class="location-hours">24시간 상담 가능</span>
+            <span>방문 상담은 예약제로 운영됩니다.<br>방문 전 연락주시면 더욱 빠르게 상담해드립니다.</span>
+          </div>
+        </div>
+        <div class="location-actions">
+          <a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EA%B4%91%EC%A3%BC%EC%8B%9C%20%EB%AC%B8%ED%99%94%EB%A1%9C%20129" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            네이버 지도에서 길찾기
+          </a>
+          <a href="tel:1588-0000" class="btn btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            전화로 문의하기
+          </a>
+        </div>
+        <p class="location-note">※ 지도를 드래그하거나 확대/축소해 정확한 위치를 확인하실 수 있습니다.</p>
+      </div>
+      <div class="location-map">
+        <div id="naverMapContainer" style="width:100%;height:100%;"></div>
+        <div class="location-map-badge">조운대부 · 경기도 광주시 문화로 129</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="final-cta">
   <div class="container">
     <div class="final-cta-card">
@@ -639,7 +724,7 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
           <span class="phone-num">1588-0000 바로 전화하기</span><span class="phone-generic">바로 전화하기</span>
         </a>
-        <a href="#apply" class="header-phone" style="text-decoration:none;">폼으로 신청하기<span>평일 09:00~18:00 전화 상담</span></a>
+        <a href="#apply" class="final-cta-secondary-link">폼으로 신청하기 (24시간 접수 가능)</a>
       </div>
     </div>
   </div>
@@ -724,15 +809,89 @@
   }, { threshold: 0.5 });
   counters.forEach(c => observer.observe(c));
 
-  // Fake form submit (demo only — connect to real backend/CRM in production)
+  // EmailJS 연동 — 상담 신청 폼을 Gmail로 전송
+  emailjs.init({ publicKey: 'TINg1sCUp_kiTCSNy' });
+
   const quickForm = document.getElementById('quickForm');
   const formSuccess = document.getElementById('formSuccess');
+  const formError = document.getElementById('formError');
+  const submitBtn = quickForm.querySelector('button[type="submit"]');
+  const submitBtnDefaultText = submitBtn.textContent;
+
   quickForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    quickForm.parentElement.classList.add('is-submitted');
-    quickForm.style.display = 'none';
-    formSuccess.classList.add('is-visible');
+    formError.classList.remove('is-visible');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '전송 중...';
+
+    emailjs.sendForm('service_56p7tud', 'template_kqh5bxn', quickForm)
+      .then((response) => {
+        console.log('EmailJS 전송 성공:', response.status, response.text);
+        quickForm.reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitBtnDefaultText;
+        quickForm.parentElement.classList.add('is-submitted');
+        quickForm.style.display = 'none';
+        formSuccess.classList.add('is-visible');
+        alert('상담 신청이 완료되었습니다.');
+      })
+      .catch((error) => {
+        console.error('EmailJS 전송 실패:', error);
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitBtnDefaultText;
+        formError.classList.add('is-visible');
+      });
   });
+
+  // 네이버 지도 임베드 — 주소를 좌표로 변환 후 마커 표시
+  function initNaverMap() {
+    var mapEl = document.getElementById('naverMapContainer');
+    if (!mapEl) return;
+    if (typeof naver === 'undefined' || !naver.maps) {
+      console.error('네이버 지도 SDK 로드에 실패했습니다. Client ID 또는 웹 서비스 URL 등록 여부를 확인해 주세요.');
+      return;
+    }
+    var address = '경기도 광주시 문화로 129';
+
+    var fallbackCenter = new naver.maps.LatLng(37.4142, 127.2554); // 광주시청 인근 대략 좌표(지오코딩 실패 시 대체)
+
+    function renderMap(position) {
+      var map = new naver.maps.Map(mapEl, {
+        center: position,
+        zoom: 16,
+        zoomControl: true,
+        zoomControlOptions: { position: naver.maps.Position.TOP_RIGHT }
+      });
+      var marker = new naver.maps.Marker({ position: position, map: map, title: '조운대부' });
+      var infoWindow = new naver.maps.InfoWindow({
+        content: '<div style="padding:10px 14px;font-size:13px;line-height:1.6;">' +
+                 '<strong>조운대부</strong><br>경기도 광주시 문화로 129, 2층</div>'
+      });
+      naver.maps.Event.addListener(marker, 'click', function(){ infoWindow.open(map, marker); });
+      infoWindow.open(map, marker);
+    }
+
+    if (naver.maps.Service && naver.maps.Service.geocode) {
+      naver.maps.Service.geocode({ query: address }, function(status, response) {
+        if (status !== naver.maps.Service.Status.OK) {
+          console.error('네이버 지도 geocode 실패:', status);
+          renderMap(fallbackCenter);
+          return;
+        }
+        var result = response.v2.addresses[0];
+        if (!result) {
+          console.error('주소 검색 결과가 없습니다:', address);
+          renderMap(fallbackCenter);
+          return;
+        }
+        renderMap(new naver.maps.LatLng(parseFloat(result.y), parseFloat(result.x)));
+      });
+    } else {
+      console.error('geocoder 서브모듈이 로드되지 않았습니다.');
+      renderMap(fallbackCenter);
+    }
+  }
+  initNaverMap();
 </script>
 
 </body>
